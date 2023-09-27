@@ -21,15 +21,7 @@ String tempUnits = "";
 #include <WebServer.h>
 #endif
 
-#include <AutoConnect.h>
-
-#if defined(ARDUINO_ARCH_ESP8266)
-ESP8266WebServer server;
-#elif defined(ARDUINO_ARCH_ESP32)
-WebServer server;
-#endif
 #include <ESPmDNS.h>
-#include <PubSubClient.h>
 #include "SoftwareStack.h"
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 2 // backward compatibility
@@ -46,38 +38,15 @@ FS &FlashFS = LittleFS;
 fs::SPIFFSFS &FlashFS = SPIFFS;
 #endif
 #include "statusLED.h"
-#include "neoTimer.h"
+#include "neo_timer.h"
 
 #define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
 
 unsigned long lastPub = 0;
-unsigned int updateInterval = 1;
+unsigned int updateInterval = 2000;
 
-#define PARAM_FILE "/param.json"
-#define AUX_MQTTSETTING "/mqtt_setting"
-#define AUX_MQTTSAVE "/mqtt_save"
-#define AUX_MQTTCLEAR "/mqtt_clear"
-static const char PAGE_AUTH[] PROGMEM = R"(
-{
-  "uri": "/auth",
-  "title": "Auth",
-  "menu": false,
-    "auth": "digest",
-  "element": [
-    {
-      "name": "text",
-      "type": "ACText",
-      "value": "AutoConnect has authorized",
-      "style": "font-family:Arial;font-size:18px;font-weight:400;color:#191970"
-    }
-  ]
-}
-)";
 
 SoftwareStack ss; // SS instance
-AutoConnectConfig config;
-AutoConnect portal(server);
-
 String loggedIn = "";
 
 String mac = (WiFi.macAddress());
@@ -93,18 +62,31 @@ const char *mqtt_client_name = __mac; //"12312312312332212";// any random alphan
 String incoming = "";
 String incomingTopic = "";
 WiFiClient wclient;
-PubSubClient mqttClient(wclient);
 
-String devList[10];
-String IMEIsList[10];
+
 String LastUpdated = "";
 String internetStatus = "Not-Connected";
 int selectedDeviceIndex = 0;
 String connectionMode = "WiFi";
 
-bool atDetect(IPAddress &softapIP)
-{
-  Serial.println("Captive portal started, SoftAP IP:" + softapIP.toString());
+int wifi_connect_tries=0;
+int connectToWiFi(String ssid, String password) {
+  Serial.println("Connecting to WiFi...");
 
-  return true;
+  WiFi.begin(ssid.c_str(), password.c_str());
+
+  while (WiFi.status() != WL_CONNECTED) {
+    if(wifi_connect_tries>=10){
+      return 0;//error
+    }
+    delay(1000);
+    wifi_connect_tries++;
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.println("Connected to WiFi!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+  return 1;//connected
 }

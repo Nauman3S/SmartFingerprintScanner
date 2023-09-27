@@ -11,22 +11,28 @@ import threading
 device_connected=1
 wifi_connected=0
 # Array of network names
-networks = ["Network1", "Network2", "Network3"]
+networks=[]
 # Function to handle client connections
 def handle_client(client_socket):
-    global device_connected,wifi_connected,wifi_status, title_label,text_label, nfc_icon, wifi_icon, wifi_label, scan_label, scan_icon, title_label,text_label, device_icon
+    global networks,device_connected,wifi_connected,wifi_status, title_label,text_label, nfc_icon, wifi_icon, wifi_label, scan_label, scan_icon, title_label,text_label, device_icon, network_selector
     while True:
         data = client_socket.recv(1024).decode('utf-8')
         if not data:
             break
 
         # Split the received data
+        # print(data)
         command, value = data.split(':')
+        
 
         if command == "update_user_count":
             user_count_label.config(text="Users: " + str(value))
         elif command == "update_title":
             title_label.config(text=value)
+        elif command == "update_networks_list":
+            networks=value.split(";")
+            network_selector.config(values=networks)
+            # print(networks)
         elif command == "update_text":
             text_label.config(text=value)
 
