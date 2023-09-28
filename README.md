@@ -42,8 +42,8 @@ This repo contains
 for Smart Fingerprint Sensor.
 
 
-![Architecture](artwork/Arch.drawio.png)
-
+![Architecture](artwork/arch.png)
+*High-level diagram of the system*
 
 ## Getting Started <a name = "getting_started"></a>
 
@@ -101,7 +101,7 @@ You should have Arduino IDE Installed
 ### ESP32 Dev Module Pinout
 
 
-Follow the pinout diagram given below to connect different components to your TTGO LORA32 board.
+Follow the pinout diagram given below to connect different components to your ESP32 board.
 
 ![LoraPinout](Circuit/ESP32-Pinout.jpg)
 
@@ -121,71 +121,71 @@ Other components pin connection details
 
 
 
-#### Buttons
+#### Status LEDs
 
-```Buttons Connections with ESP32```
+```LED Connections with ESP32```
 
-| Buttons Pins | ESP32 Dev Module Pins| 
+| LED Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `BTN1_PIN1` | `12` |
-| `BTN2_PIN1` | `32` |
-| `BTN3_PIN1` | `15` |
-| `BTN4_PIN1` | `2` |
-| `BTN5_PIN1` | `4` |
-| `BTN6_PIN1` | `5` |
+| `Green LED +` | `D25` |
+| `Yellow LED +` | `D33` |
+| `Red LED +` | `D32` |
 
+The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 
+#### PAM8302A
 
-| `ALL BTN PIN2` | `GND` |
+```PAM8302A Connections with ESP32```
 
-#### L298N Pins
-
-```L298N Connections with ESP32```
-
-| L298N Pins | ESP32 Dev Module Pins| 
+| PAM8302A Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `ENA` | `14` |
-| `IN1` | `27` |
-| `IN2` | `26` |
+| `A+` | `D12` |
+| `SD` | `D14` |
+| `VIN` | `3.3V` |
+| `GND` | `GND` |
 
-* While OUT1 and OUT2 will be connected to the linear actuator.
-* 12V will be connected to the 12V source.
 
-#### Status RGB LED
 
-```LED Connections```
+#### AS608 Fingerprint Scanner
 
-| LED Pins | ESP32 Dev Module | 
+```AS608 Connections```
+
+| AS608 Pins | ESP32 Dev Module | 
 | :--- | :--- | 
-| `Anode` | `33 via 220Ω resistor` |
-| `Cathode` | `GND` |
-*33 is also connected to the internal LED of ESP32 Dev Module*
+| `V+` | `3.3V` |
+| `GND` | `GND` |
+| `TX` | `RX2` |
+| `RX` | `TX2` |
 
 
+#### SSD1351 OLED Fingerprint Scanner
+
+```SSD1351 Connections```
+
+| SSD1351 Pins | ESP32 Dev Module | 
+| :--- | :--- | 
+| `VCC` | `VIN` |
+| `GND` | `GND` |
+| `RST` | `D5` |
+| `DC` | `D35` |
+| `CS` | `D34` |
+| `CLK` | `D18` |
+| `DIN` | `D23` |
 
 ## Usage <a name = "usage"></a>
 
 ```diff
 ! Ready for testing
 ```
-1.  Power on your ESP32, it will present you with an AP named ```SmartJ``` (while ```SmartJ``` can be changed in the portal)
-2.  Default captive portal password `12345678AP` which can be changed in captive portal.
-3.  Connect to the ESP32 access point and open the web-browser and navigate to the link ```http://smartj.local/_ac```. This link will work on most of the operating systems but if your operating system is not allowing to open it, you may want to check the captive portal IP Address from the serial monitor and can use that IP address inplace of the above mentioned URL.
-4.  The default access IP Address is ```http://192.168.4.1/_ac```
-5.  You will be presented with a main dashboard as shown below(based on your device)
-   ![SCR1](artwork/scr1.png)
-
-5.  Once connected to a WiFi network, you can again access the captive portal using same URL or the IP Address from the Serial monitor.
-6.  The data is published to the MQTT Topic ```smartj/{hostname}``` while the hostname is the one which you can define in Settings page of the captive portal.
-
-
-### Changing Timezone
-```diff
-+ Only for developers
+1.  Power on your ESP32.
+2. Connect it to your laptop via USB cable
+3. Open the Dashboard using following
+```bash
+cd GUI
+pip3 install -r requirements.txt
+python3 tk_ui.py
+python3 serial_handler.py
 ```
-1.  Open Settings tab
-2.  Enter timezone string from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 'TZ database name' column.
-3.  Click Save&Start
 
 ### API Endpoints and HTML URLS
 
@@ -193,68 +193,36 @@ Other components pin connection details
 
 | Endpoint | Description | 
 | :--- | :--- | 
-| `/api-now` | `API: live sensor readings in JSON format` |
-| `/api` | `API: sensors data in JSON format` |
-| `/LiveSensors` | `HTML PAGE: Live Sensor Data` |
-| `/data` | `HTML PAGE: Historical Sensor Data` | 
-| `/mqtt_settings` | `HTML PAGE: Settings. Default username: AP Name, Default Password: admin` | 
-| `/_ac` | `HTML PAGE: Main Captive portal page` | 
-| `/` | `HTML PAGE: Historical Sensor Data` | 
+| `/user_count` | `user count` |
 
-
-1.  **Connect to WiFi** tab allows searching of nearby WiFi APs and adding them to the ESP32.
-   ![SCR3](artwork/scr3.png)
-2.  **Saved WiFi Networks** tab allows connecting to the saved access points.
-   ![SCR4](artwork/scr4.png)
-3.  **Reset...** tab allows reseting of the device to factory settings.
-    ![SCR5](artwork/scr5.png)
-4.  **Settings** tab contains settings related to MQTT and sensors.
-    ![SCR6](artwork/scr6.png)
-5. **HOME** tab shows sensor data acquired live.
-
-
-## Web App <a name="webapp"></a>
-```diff
-+ For future use
-```
-[Dashboard Link: ]()
-
-You can access the webapp with following test acccount credentials
-
-*   Email Address: `test@test.com`
-*   Password: `test`
 
 ### Dashboard Screenshots
-
-## Smartphone App <a name="smartphoneapp"></a>
-```diff
-+ For future use
-```
-[Smartphone App Link: ]()
-
-You can access the Smartphone app with following test acccount credentials
-
-*   Email Address: `test@test.com`
-*   Password: `test`
-
-### Smartphone App Screenshots
-
-
-
+**Main Screen**
+![DSCR1](artwork/dscr1.png)
+**WiFi Networks Selection**
+![DSCR2](artwork/dscr2.png)
+**WiFi Connected**
+![DSCR3](artwork/dscr3.png)
+**Connected to backend via email address**
+![DSCR4](artwork/dscr4.png)
+**Fingerprint scanning**
+![DSCR5](artwork/dscr5.png)
+**Teammate added**
+![DSCR6](artwork/dscr6.png)
+**WiFi not connected and device disconnected errors**
+![DSCR7](artwork/dscr7.png)
 
 ## List of Components <a name = "list"></a>
-```diff
-+ For future use; not a comprehensive list
-```
+
 Following components are used to make this project
 
-1.  [ESP32 Dev Kit Module](https://www.amazon.com/HiLetgo-ESP-WROOM-32-Development-Microcontroller-Integrated/dp/B0718T232Z/ref=sr_1_3?crid=5EOAXOANUSCU&dchild=1&keywords=esp32+nodemcu&qid=1629587138&sprefix=esp32+node%2Caps%2C201&sr=8-3)
-
-2. [Micro USB Cable](https://www.amazon.com/Android-Charger-sweguard-Charging-Phone-Grey/dp/B09MT18H3J/ref=sr_1_2_sspa?keywords=micro+usb+cable&qid=1661962441&sprefix=micro+usb+%2Caps%2C181&sr=8-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzVkw1N1RQVTVHTVA3JmVuY3J5cHRlZElkPUEwODYyODU0MUdBSDQwTjBWVDZVSiZlbmNyeXB0ZWRBZElkPUEwODMyNjQyMVo4WU1VOVQ5UlMzQiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=)
-
-3. [2x Joystick Modules](https://www.amazon.com/Active-Piezo-Buzzer-Module-SunFounder/dp/B014KQLE8Q/ref=sr_1_7?crid=33DTNM1X8SVMH&keywords=joystick%2Bmodule&qid=1660570221&sprefix=joystick%2Bmodule%2Caps%2C175&sr=8-7&th=1)
-
-4. [Jumper Wires](https://www.amazon.com/EDGELEC-Breadboard-Optional-Assorted-Multicolored/dp/B07GD2BWPY/ref=sr_1_1_sspa?crid=1EFHAMLH1TF1Q&keywords=jumper+wires&qid=1661962101&sprefix=jumper+wire%2Caps%2C197&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFHUFdBUzFHMDVOSlUmZW5jcnlwdGVkSWQ9QTAwNTYwNTAyVDNTNFI5RVI4TTNQJmVuY3J5cHRlZEFkSWQ9QTA5NDU0MzYxSkE3VExKQkZEQUxaJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==)
+1.  ESP32 Dev Kit Module
+2.  PAM8302
+3.  Speaker
+4. Red, Green, Yellow LEDs
+5. 330Ohm Resistors
+6. AS608 Fingerprint Sensor
+7. SSD1351 OLED
 
 
 ## ⛏️ Built Using <a name = "built_using"></a>

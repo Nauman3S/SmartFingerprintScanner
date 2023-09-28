@@ -1,3 +1,8 @@
+void serial_callback(String payload);
+void serial_publish(String payload);
+void serial_handler();
+
+
 String serverName;
 String channelId;
 String userKey;
@@ -5,13 +10,8 @@ String timezone = "";
 String apiKey;
 String apid;
 String hostName = "SmartJ";
-String minActiveValue = "0";
-String ampSensorType;
-String sensorSelection;
-String apPass;
-String settingsPass;
-String Photosensor = "0";
-String tempUnits = "";
+
+String networks = "";
 
 #if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
@@ -71,12 +71,14 @@ String connectionMode = "WiFi";
 
 int wifi_connect_tries=0;
 int connectToWiFi(String ssid, String password) {
+  wifi_connect_tries=0;
   Serial.println("Connecting to WiFi...");
 
   WiFi.begin(ssid.c_str(), password.c_str());
 
   while (WiFi.status() != WL_CONNECTED) {
     if(wifi_connect_tries>=10){
+      Serial.println("Can't connect to WiFi");
       return 0;//error
     }
     delay(1000);
@@ -88,5 +90,17 @@ int connectToWiFi(String ssid, String password) {
   Serial.println("Connected to WiFi!");
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
+  wifi_connect_tries=0;
   return 1;//connected
+}
+void scanForNetworks()
+{
+    int numberOfNetworks = WiFi.scanNetworks();
+
+    // Dynamically allocate memory for the SSID array
+
+    for (int i = 0; i < numberOfNetworks; i++)
+    {
+        networks = networks + WiFi.SSID(i) + ";"; // Store only the SSID
+    }
 }
