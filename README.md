@@ -127,8 +127,8 @@ Other components pin connection details
 
 | LED Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `Green LED +` | `D25` |
-| `Yellow LED +` | `D33` |
+| `Green LED +` | `D27` OR `G27` |
+| `Yellow LED +` | `D33` OR `G33`|
 | `Red LED +` | `D32` |
 
 The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
@@ -139,8 +139,9 @@ The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 
 | PAM8302A Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `A+` | `D12` |
-| `SD` | `D14` |
+| `A+` | `D25` OR `G25` |
+| `A-` | `GND` |
+| `SD` | `D14` OR `G14` |
 | `VIN` | `3.3V` |
 | `GND` | `GND` |
 
@@ -154,11 +155,11 @@ The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 | :--- | :--- | 
 | `V+` | `3.3V` |
 | `GND` | `GND` |
-| `TX` | `RX2` |
-| `RX` | `TX2` |
+| `TX` | `RX2` OR `G16`|
+| `RX` | `TX2` OR  `G17` |
 
 
-#### SSD1351 OLED Fingerprint Scanner
+#### SSD1351 OLED
 
 ```SSD1351 Connections```
 
@@ -166,11 +167,11 @@ The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 | :--- | :--- | 
 | `VCC` | `VIN` |
 | `GND` | `GND` |
-| `RST` | `D5` |
-| `DC` | `D35` |
-| `CS` | `D34` |
-| `CLK` | `D18` |
-| `DIN` | `D23` |
+| `RST` OR `RES` | `D19` OR `G19` |
+| `DC` | `D4` OR `G4` |
+| `CS` | `D5` OR `G5` |
+| `CLK` OR `SCL` | `D18` OR `G18`|
+| `DIN` OR `SDA` | `D23` OR `G23` |
 
 ## Usage <a name = "usage"></a>
 
