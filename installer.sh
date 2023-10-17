@@ -120,9 +120,7 @@ download_and_extract "https://github.com/Nauman3S/SmartFingerprintScanner/archiv
 wait
 
 # Clean up and setup GUI
-cd "${BASE_DIR}/SmartFingerprintScanner-main" || exit
-find . ! -name "GUI" -maxdepth 1 -mindepth 1 -exec rm -rf {} + # Delete all folders except GUI
-cd GUI || exit
+cd "${BASE_DIR}/SmartFingerprintScanner-main"
 
 # Check if requirements are already installed
 if ! pip3 freeze | grep -q -f GUI/requirements.txt; then
