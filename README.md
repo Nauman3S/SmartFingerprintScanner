@@ -188,6 +188,22 @@ python3 tk_ui.py
 python3 serial_handler.py
 ```
 
+### One-Click Installer
+
+You will need to run the following command in order to install or update the SmartFingerprintScanner
+
+```bash
+wget -O - https://raw.githubusercontent.com/Nauman3S/SmartFingerprintScanner/main/installer.sh | bash
+```
+
+### One-click Run
+
+1.  The program can be run using the following command
+```bash
+cd ~/SmartFPS
+./run.sh
+```
+
 ### API Endpoints and HTML URLS
 
 ```API Endpoints```
