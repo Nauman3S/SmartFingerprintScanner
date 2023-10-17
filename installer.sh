@@ -62,12 +62,6 @@ if ! ping -c 1 8.8.8.8 &>/dev/null; then
     exit 1
 fi
 
-# Check if TOKEN environment variable is set and not empty
-if [[ -z "${TOKEN}" ]]; then
-    echo "Please set GitHub Auth token and run again."
-    exit 1
-fi
-
 # Base directory
 BASE_DIR=~/SmartFPS
 
