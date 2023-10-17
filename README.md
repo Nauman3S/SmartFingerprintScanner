@@ -217,6 +217,12 @@ cd ~/SmartFPS
 ./run.sh
 ```
 
+2. To test new GUI Version 2, execute the following command
+```bash
+cd ~/SmartFPS
+./run.sh v2
+```
+
 ### API Endpoints and HTML URLS
 
 ```API Endpoints```

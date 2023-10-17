@@ -4,6 +4,7 @@
 BASE_DIR=~/SmartFPS
 GUI_DIR="${BASE_DIR}/SmartFingerprintScanner-main/GUI"
 GUI_PATH="${GUI_DIR}/tk_ui.py"
+GUI_PATH_V2="${GUI_DIR}/gui.py"
 SERIAL_HANDLER="${BASE_DIR}/SmartFingerprintScanner-main/GUI/serial_handler.py"
 
 # Function to check if a process is running
@@ -33,8 +34,19 @@ fi
 # Start the socket server (Python3 based tkinter GUI)
 echo "Starting socket server..."
 
+
+
+# If the parameter is v2, just run gui.py
+if [[ "$1" == "v2" ]]; then
+    cd "$GUI_DIR"
+    DISPLAY=:0 python3 "$GUI_PATH_V2" &
+    echo "Started GUI V2."
+    exit 0
+fi
+
 # Change to GUI directory to ensure relative paths in the Python script work correctly
 cd "$GUI_DIR"
+
 DISPLAY=:0 python3 "$GUI_PATH" &
 
 # Wait for the socket server to be ready
