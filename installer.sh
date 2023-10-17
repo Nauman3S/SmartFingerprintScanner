@@ -9,6 +9,7 @@ check_and_install_python_on_mac() {
         if ! command -v brew &>/dev/null; then
             echo "Homebrew not found. Installing..."
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            wait
         else
             echo "Homebrew is already installed."
         fi
@@ -27,6 +28,8 @@ check_and_install_python_on_mac() {
             brew install tcl-tk
         else
             echo "tcl-tk is already installed."
+            brew uninstall tcl-tk
+            brew install tcl-tk
         fi
 
         # Check if pip3 is installed

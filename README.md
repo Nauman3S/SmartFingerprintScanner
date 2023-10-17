@@ -129,7 +129,7 @@ Other components pin connection details
 | :--- | :--- | 
 | `Green LED +` | `D27` OR `G27` |
 | `Yellow LED +` | `D33` OR `G33`|
-| `Red LED +` | `D32` |
+| `Red LED +` | `D32`  OR `G32` |
 
 The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 
@@ -165,7 +165,7 @@ The negative pins of each LED will be connected to `GND` via 330Ohm Resistor.
 
 | SSD1351 Pins | ESP32 Dev Module | 
 | :--- | :--- | 
-| `VCC` | `VIN` |
+| `VCC` | `VIN` OR `V5` |
 | `GND` | `GND` |
 | `RST` OR `RES` | `D19` OR `G19` |
 | `DC` | `D4` OR `G4` |
@@ -190,10 +190,23 @@ python3 serial_handler.py
 
 ### One-Click Installer
 
-You will need to run the following command in order to install or update the SmartFingerprintScanner
+You will need to run the following command in order to install or update the SmartFingerprintScanner:
 
 ```bash
 wget -O - https://raw.githubusercontent.com/Nauman3S/SmartFingerprintScanner/main/installer.sh | bash
+```
+
+on macOS
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Nauman3S/SmartFingerprintScanner/main/installer.sh | bash
+```
+
+```diff
+If macOS installer don't work, run the following commands and again run the One-Click Installer for macOS
+```
+```bash
+rm -rf ~/SmartFS
 ```
 
 ### One-click Run

@@ -38,7 +38,6 @@ def handle_client(client_socket):
         # print(data)
         command, value = data.split(':')
         
-
         if command == "update_user_count":
             user_count_label.config(text="Users: " + str(value))
         elif command == "update_title":
