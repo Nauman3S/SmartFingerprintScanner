@@ -32,6 +32,16 @@ check_and_install_python_on_mac() {
             brew install tcl-tk
         fi
 
+        if ! brew list python-tk &>/dev/null; then
+            echo "python-tk is not installed. Installing now..."
+            brew install python-tk
+        else
+            echo "python-tk is already installed."
+            brew uninstall python-tk
+            brew install python-tk
+        fi
+
+
         # Check if pip3 is installed
         if ! command -v pip3 &>/dev/null; then
             echo "pip3 not found. Installing..."
